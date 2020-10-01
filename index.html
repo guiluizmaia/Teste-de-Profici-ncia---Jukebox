@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- O estilo eu usei o BootStrap para facilitar a aparência-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+    <title>Futuro programador - JukeBox</title>
+</head>
+<body>
+    <div id="pagina"></div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#pagina',
+            template: `
+    <div class="container">
+        <h1>GUILHERME LUIZ MAIA PINTO - FUTURO FUNCIONÁRIO JUKEBOX</h1>
+        <hr />
+        <div class="form-todo form-group">
+            <p>
+                <input placeholder="Nome" type="text" name="nome" class="form-control" v-model="nome">
+            </p>
+            <p>
+                <input placeholder="Sobrenome" type="text" name="sobrenome" class="form-control" v-model="sobrenome">
+            </p>
+            <p>
+                <input placeholder="E-Mail" type="text" name="email" class="form-control" v-model="email">
+            </p>
+            <p>
+                <input placeholder="Telefone" type="text" name="tel" class="form-control" v-model="tel">
+            </p>
+            <p>
+                <label><input type=checkbox checked=checked class="form-group" v-model="pessoaJuridica"> Pessoa Jurídica</label>
+            </p>
+            <p>
+                <input placeholder="CNPJ" type="text" name="cnpj" class="form-control" v-if="pessoaJuridica == true" v-model="cnpj">
+            </p>
+            <p>
+                <input placeholder="CPF" type="text" name="cpf" class="form-control" v-if="pessoaJuridica == false" v-model="cpf">
+            </p>
+            
+
+            <button v-on:click="add" type="button" class="btn btn-outline-primary">Enviar</button>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">E-Mail</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Pessoa Jurídica</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">CNPJ</th>
+                        <th scope="col">Excluir</th>
+                        <th scope="col">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(pessoa, index) in pessoas">
+                        <td>{{pessoa.nome + ' ' + pessoa.sobrenome}}</td>
+                        <td>{{pessoa.email}}</td>
+                        <td>{{pessoa.tel}}</td>
+                        <td>{{pessoa.pessoaJuridica}}</td>
+                        <td>{{pessoa.cpf}}</td>
+                        <td>{{pessoa.cnpj}}</td>
+                        <td><a href="#" v-on:click="excluir(index)">Excluir</a></td>
+                        <td><a href="#" v-on:click="editar(index)">Editar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>`,
+
+    data() {    
+        return{
+            pessoas: [],
+            nome: "",
+            sobrenome: "",
+            email: "",
+            tel: "",
+            cpf: "",
+            cnpj: "",
+            pessoaJuridica: ""
+        }
+        
+    },
+    
+    /*computed:{
+        nomeCompleto: function(a, b){
+            return this.a + ' ' + this.b;
+        }
+    },*/
+
+    watch :{
+        pessoaJuridica:function(value){
+            if (value == true){
+                this.pessoaJuridica = true;
+            }
+            else{
+                this.pessoaJuridica = false;
+            }
+        }
+    },
+    
+    methods: {
+        add(){
+            this.pessoas.push({
+                nome: this.nome,
+                sobrenome: this.sobrenome,
+                email: this.email,
+                tel: this.tel,
+                pessoaJuridica: this.pessoaJuridica,
+                cpf: this.cpf,
+                cnpj: this.cnpj
+            });
+
+            this.nome = '',
+            this.sobrenome = '',
+            this.email = '',
+            this.tel = '',
+            this.cpf = '',
+            this.cnpj = ''
+        },
+        excluir(index){
+            this.pessoas.splice(index, 1);
+        },
+        editar(index){
+            this.nome = this.pessoas[index].nome;
+            this.sobrenome = this.pessoas[index].sobrenome;
+            this.email = this.pessoas[index].email;
+            this.tel = this.pessoas[index].tel;
+            this.cpf = this.pessoas[index].cpf;
+            this.cnpj = this.pessoas[index].cnpj;
+            this.pessoas.splice(index, 1);
+        }
+    },
+
+        
+        
+})
+    </script>
+</body>
+</html>
